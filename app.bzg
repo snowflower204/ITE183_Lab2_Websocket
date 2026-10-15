@@ -5,6 +5,10 @@ var server = http(8000);
 server.get = function (path, data) {
     if (path == "/") {
         server.sendFile("public/index.html");
+    } else if (path == "/assests/econite-logo.png") {
+        server.sendFile("public/assests/econite-logo.png");
+    } else if (path == "/assests/favicon.ico") {
+        server.sendFile("public/assests/favicon.ico");
     } else {
         server.sendFile("public/404.html");
     }
