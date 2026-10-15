@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EcoNite — Consultation Chat</title>
+</head>
+<body>
+  <h1>EcoNite Consultation Chat</h1>
+  <p id="status">Connecting...</p>
+
+  <form id="chatForm">
+    <input id="message" placeholder="Type a message"
+           aria-label="Message" maxlength="2000" disabled>
+    <button id="sendButton" type="submit" disabled>Send</button>
+  </form>
+
+  <ul id="messages" aria-live="polite"></ul>
+
+  <script>
+    const statusText = document.getElementById("status");
+    const input = document.getElementById("message");
+    const button = document.getElementById("sendButton");
+    const messages = document.getElementById("messages");
+    const form = document.getElementById("chatForm");
+
+    const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+    const socket = new WebSocket(protocol + "//" + location.host);
+
+    socket.onopen = function () {
+      statusText.textContent = "Connected";
+      input.disabled = false;
+      button.disabled = false;
+      input.focus();
+    };
+
+    socket.onmessage = function (event) {
+      const item = document.createElement("li");
+      item.textContent = event.data;
+      messages.appendChild(item);
+    };
+
+    socket.onclose = function () {
+      statusText.textContent = "Disconnected — refresh to reconnect.";
+      input.disabled = true;
+      button.disabled = true;
+    };
+
+    socket.onerror = function () {
+      statusText.textContent = "Connection error — check your server terminal.";
+    };
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const text = input.value.trim();
+
+      if (text && socket.readyState === WebSocket.OPEN) {
+        socket.send(text);
+        input.value = "";
+        input.focus();
+      }
+    });
+  </script>
+</body>
+</html>
