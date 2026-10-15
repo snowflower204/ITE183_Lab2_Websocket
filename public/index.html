@@ -2,424 +2,176 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
-  <meta name="theme-color" content="#173d32">
-  <meta name="description" content="Econite's shared mentorship consultation chat. Ask, listen, and grow together.">
-  <title>Econite — Consultation Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123d32">
+  <meta name="description" content="Every great idea starts with a conversation. Explore Econite, an early research mentorship prototype, and try the shared consultation chat.">
+  <title>Econite Homepage</title>
   <link rel="icon" href="/assests/favicon.ico" type="image/png">
-  <style>
-    :root { color-scheme: light; --canvas: #f5f5ef; --surface: #fff; --forest: #173d32; --green: #216b4b; --green-soft: #eaf2e9; --ink: #24372e; --muted: #626d66; --line: #e1e6dd; --cream: #fbfaf5; }
-    * { box-sizing: border-box; }
-    body { margin: 0; height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--canvas); color: var(--ink); font: 14px/1.5 "Segoe UI", system-ui, sans-serif; }
-    button, input, select { font: inherit; }
-    button, select { cursor: pointer; }
-    button:disabled { cursor: not-allowed; }
-    a { color: inherit; }
-    button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
-    :focus-visible { outline: 3px solid #337a56; outline-offset: 4px; }
-    [hidden] { display: none !important; }
-    .skip-link { position: fixed; left: 20px; top: -80px; padding: 12px 18px; background: var(--forest); color: white; z-index: 10; border-radius: 8px; }
-    .skip-link:focus { top: 12px; }
-    .icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-    .navbar { flex-shrink: 0; background: var(--surface); border-bottom: 1px solid var(--line); }
-    .nav-inner { height: 84px; max-width: 1480px; margin: auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-    .nav-brand { display: flex; align-items: center; gap: 22px; min-width: 0; }
-    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; font-size: 23px; font-weight: 750; letter-spacing: -.9px; color: var(--forest); }
-    .brand img { width: 46px; height: 46px; border-radius: 11px; display: block; }
-    .nav-title { border-left: 1px solid var(--line); padding-left: 22px; color: var(--muted); font-size: 13px; }
-    .lab-tag { border: 1px solid var(--line); border-radius: 7px; padding: 5px 10px; font-size: 11px; color: var(--muted); letter-spacing: .35px; white-space: nowrap; }
-    .dashboard { width: 100%; max-width: 1480px; margin: 0 auto; padding: 28px 40px 16px; flex: 1; min-height: 0; display: flex; flex-direction: column; }
-    .page-heading { margin-bottom: 24px; flex-shrink: 0; }
-    .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1.7px; color: var(--green); margin: 0 0 6px; }
-    h1 { font-size: clamp(24px, 2.1vw, 32px); font-weight: 650; letter-spacing: -1.1px; line-height: 1.25; margin: 0; color: var(--forest); }
-    .heading-note { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
-    .workspace { display: grid; grid-template-columns: 260px minmax(0, 1fr); flex: 1; min-height: 0; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 6px 24px #173d3205; overflow: hidden; }
-    .sidebar { padding: 26px 18px 20px; border-right: 1px solid var(--line); background: #fcfcf9; display: flex; flex-direction: column; gap: 22px; min-height: 0; overflow-y: auto; }
-    .sidebar-title { display: flex; justify-content: space-between; align-items: center; padding: 0 8px; }
-    .sidebar-title h2 { font-size: 10px; letter-spacing: 1.5px; color: var(--muted); margin: 0; font-weight: 650; }
-    .room-count { color: var(--muted); font-size: 10px; border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
-    .room-card { display: flex; align-items: flex-start; gap: 11px; background: var(--green-soft); border: 1px solid #dbe8d9; border-radius: 11px; padding: 15px 12px; }
-    .room-icon { display: grid; place-items: center; width: 35px; height: 35px; border-radius: 9px; background: var(--green); color: white; flex-shrink: 0; }
-    .room-card strong { font-size: 12px; font-weight: 650; color: var(--forest); display: block; margin-bottom: 3px; }
-    .room-card p { font-size: 11px; color: #506650; margin: 0; }
-    .room-context { padding: 0 8px; font-size: 12px; color: var(--muted); margin: -6px 0 0; line-height: 1.7; }
-    .role-panel { border-top: 1px solid var(--line); padding: 22px 8px 0; }
-    .role-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; gap: 8px; }
-    .role-label label { font-size: 12px; font-weight: 600; }
-    .demo-tag { font-size: 9px; text-transform: uppercase; letter-spacing: .5px; border: 1px solid #dddacb; background: #f4f1e6; color: #68604a; padding: 2px 5px; border-radius: 4px; }
-    #demoRole { width: 100%; padding: 10px; color: var(--forest); border: 1px solid #d4dccf; background: white; border-radius: 8px; min-height: 42px; }
-    .role-help { color: var(--muted); font-size: 11px; line-height: 1.65; margin: 9px 0 0; }
-    .sidebar-footer { margin-top: auto; padding: 24px 8px 0; }
-    .sidebar-footer .icon { color: var(--green); width: 25px; height: 25px; margin-bottom: 8px; }
-    .sidebar-footer p { margin: 0; color: var(--forest); font-size: 15px; font-weight: 550; line-height: 1.5; letter-spacing: -.3px; }
-    .sidebar-footer small { display: block; margin-top: 8px; font-size: 11px; color: var(--muted); }
-    .chat { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
-    .chat-header { padding: 21px 26px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-shrink: 0; }
-    .chat-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .chat-title > .icon { height: 36px; width: 36px; padding: 8px; border: 1px solid var(--line); border-radius: 10px; color: var(--green); }
-    .chat-title h2 { font-size: 16px; font-weight: 650; letter-spacing: -.3px; margin: 0; color: var(--forest); }
-    .chat-title p { font-size: 11px; color: var(--muted); margin: 3px 0 0; }
-    .connection { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-    .status { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; padding: 5px 9px; border-radius: 6px; background: #f4f0e4; color: #786027; white-space: nowrap; }
-    .status::before { content: ""; width: 6px; height: 6px; background: currentColor; border-radius: 50%; }
-    .status[data-state="connected"] { background: #edf5ec; color: #32653d; }
-    .status[data-state="disconnected"] { background: #f0f1ee; color: #5c655e; }
-    .status[data-state="error"] { background: #fceee9; color: #a3402e; }
-    .reconnect { background: white; color: var(--green); border: 1px solid var(--line); padding: 5px 10px; border-radius: 6px; min-height: 32px; font-size: 11px; }
-    .room-notice { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 26px; background: var(--cream); border-bottom: 1px solid #eeeee4; color: #626755; font-size: 11px; flex-shrink: 0; }
-    .room-notice > span { display: flex; align-items: center; gap: 7px; }
-    .room-notice .icon { width: 14px; height: 14px; }
-    .room-details { position: relative; flex-shrink: 0; }
-    .room-details summary { cursor: pointer; color: var(--green); text-decoration: underline; text-underline-offset: 3px; }
-    .details-content { position: absolute; right: 0; top: 25px; z-index: 2; width: min(285px, calc(100vw - 64px)); max-height: 45vh; overflow-y: auto; padding: 16px; background: white; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px #173d3214; color: var(--muted); line-height: 1.65; }
-    .details-content p { margin: 0 0 10px; }
-    .details-content p:last-child { margin-bottom: 0; }
-    .message-area { position: relative; display: flex; flex-direction: column; flex: 1; min-height: 0; }
-    .message-scroll { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #ccd6c8 transparent; flex: 1; padding: 24px 28px; }
-    .session-marker { display: flex; gap: 12px; align-items: center; justify-content: center; color: #71796e; font-size: 10px; margin: 0 0 22px; }
-    .session-marker::before, .session-marker::after { content: ""; width: 40px; height: 1px; background: var(--line); }
-    .empty-state { max-width: 340px; margin: 36px auto 30px; text-align: center; }
-    .empty-icon { color: var(--green); background: var(--green-soft); border: 1px solid #dce8d7; border-radius: 18px; width: 62px; height: 62px; display: grid; place-items: center; margin: 0 auto 17px; transform: rotate(-5deg); }
-    .empty-icon .icon { height: 29px; width: 29px; transform: rotate(5deg); }
-    .empty-state h3 { color: var(--forest); font-size: 20px; font-weight: 600; letter-spacing: -.5px; margin: 0 0 8px; }
-    .empty-state p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
-    .messages { list-style: none; margin: 0; padding: 0; }
-    .message { width: fit-content; max-width: min(82%, 700px); margin: 0 0 18px; }
-    .message-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 0 0 6px 2px; font-size: 11px; color: var(--muted); }
-    .message-label { color: #475d4e; font-weight: 600; font-size: 11px; }
-    .message-bubble { margin: 0; padding: 12px 16px; border-radius: 3px 14px 14px; border: 1px solid #e0e8dc; background: #f1f5ee; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.65; font-size: 14px; unicode-bidi: plaintext; }
-    .system-message { margin: 0 0 22px; text-align: center; color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
-    .system-message time { display: block; color: var(--muted); font-size: 9px; margin-top: 3px; }
-    .new-messages { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: var(--forest); color: white; border: 0; border-radius: 30px; padding: 9px 15px; font-size: 12px; box-shadow: 0 3px 12px #173d3230; }
-    .composer { padding: 17px 26px 18px; border-top: 1px solid var(--line); flex-shrink: 0; }
-    .composer-top { display: flex; justify-content: space-between; gap: 10px; font-size: 10px; margin: 0 1px 8px; color: var(--muted); }
-    .composer-top label { color: #52604f; font-weight: 600; }
-    .input-shell { display: flex; gap: 12px; align-items: center; padding: 7px 7px 7px 15px; border: 1px solid #d7dfd0; border-radius: 12px; background: #fdfefb; transition: border-color .15s, box-shadow .15s; }
-    .input-shell:focus-within { border-color: #71966a; box-shadow: 0 0 0 3px #216b4b0b; }
-    #message { min-width: 0; flex: 1; color: var(--ink); background: transparent; border: 0; outline: none; padding: 8px 0; font-size: 13px; }
-    #message::placeholder { color: #737c70; }
-    #message:disabled { opacity: .65; cursor: not-allowed; }
-    .send-button { display: flex; gap: 8px; align-items: center; justify-content: center; min-width: 94px; min-height: 42px; padding: 10px 15px; border: 0; border-radius: 8px; color: white; background: var(--green); font-size: 12px; font-weight: 600; }
-    .send-button:hover:enabled { background: var(--forest); }
-    .send-button:disabled { background: #e3e8de; color: #707b69; }
-    .send-button .icon { width: 16px; height: 16px; }
-    .composer-bottom { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; margin-top: 8px; color: var(--muted); font-size: 10px; }
-    #connectionHint { margin: 0; }
-    .enter-hint { white-space: nowrap; }
-    kbd { font-family: inherit; }
-    .page-footer { display: flex; justify-content: space-between; color: var(--muted); font-size: 10px; padding: 11px 2px 0; flex-shrink: 0; }
-    @media (min-width: 1400px) { .message-scroll { padding: 28px 40px; } }
-    @media (max-width: 1000px) {
-      .nav-inner { padding: 0 24px; height: 72px; }
-      .dashboard { padding: 24px 24px 12px; }
-      .workspace { grid-template-columns: 225px minmax(0, 1fr); }
-      .sidebar { padding: 22px 12px 18px; }
-      .chat-header, .composer, .room-notice { padding-left: 20px; padding-right: 20px; }
-      .message-scroll { padding: 22px 20px; }
-    }
-    @media (max-width: 760px) {
-      .nav-inner { padding: 0 18px; height: 66px; }
-      .nav-brand { gap: 14px; }
-      .brand { font-size: 21px; gap: 8px; }
-      .brand img { width: 37px; height: 37px; border-radius: 9px; }
-      .nav-title { font-size: 11px; padding-left: 14px; }
-      .lab-tag { display: none; }
-      .dashboard { padding: 18px 16px 10px; }
-      .page-heading { margin-bottom: 16px; }
-      h1 { font-size: 23px; letter-spacing: -.7px; }
-      .eyebrow { font-size: 9px; }
-      .heading-note { font-size: 12px; }
-      .workspace { display: flex; flex-direction: column; border-radius: 14px; }
-      .sidebar { flex-shrink: 0; overflow: visible; padding: 9px 15px; border-right: 0; border-bottom: 1px solid var(--line); display: block; }
-      .sidebar-title, .room-card, .room-context, .sidebar-footer { display: none; }
-      .role-panel { padding: 0; border: 0; display: flex; align-items: center; gap: 14px; }
-      .role-label { margin: 0; flex-shrink: 0; }
-      .role-label label { font-size: 11px; }
-      #demoRole { width: auto; margin-left: auto; min-height: 36px; padding: 5px 28px 5px 9px; font-size: 12px; }
-      .role-help { display: none; }
-      .chat { flex: 1; }
-      .chat-header { padding: 14px 15px; gap: 8px; }
-      .chat-title { gap: 9px; }
-      .chat-title h2 { font-size: 14px; }
-      .chat-title p { display: none; }
-      .chat-title > .icon { height: 32px; width: 32px; padding: 7px; }
-      .status { font-size: 10px; padding: 5px 7px; }
-      .room-notice { padding: 9px 15px; font-size: 10px; }
-      .room-notice > span { gap: 5px; }
-      .message-scroll { padding: 18px 15px; }
-      .empty-state { margin: 18px auto 25px; max-width: 265px; }
-      .empty-state h3 { font-size: 18px; }
-      .empty-icon { width: 52px; height: 52px; border-radius: 15px; }
-      .message { max-width: 94%; }
-      .composer { padding: 12px 13px; }
-      #message { font-size: 16px; }
-      .input-shell { gap: 6px; padding-left: 12px; }
-      .send-button { min-width: 42px; padding: 10px 12px; }
-      .send-button span { display: none; }
-      .enter-hint { display: none; }
-      .page-footer { font-size: 9px; padding-top: 8px; }
-      .page-footer span:last-child { display: none; }
-    }
-    @media (max-height: 720px) {
-      .page-heading { margin-bottom: 14px; }
-      .heading-note { display: none; }
-      .dashboard { padding-top: 16px; }
-      .empty-state { margin-top: 8px; margin-bottom: 20px; }
-      .empty-icon { width: 44px; height: 44px; border-radius: 13px; margin-bottom: 10px; }
-      .empty-icon .icon { height: 23px; width: 23px; }
-      .sidebar-footer { display: none; }
-    }
-    @media (max-width: 760px) and (max-height: 640px) {
-      .page-heading { display: none; }
-    }
-    @media (max-height: 540px) {
-      .page-heading, .page-footer, .sidebar { display: none; }
-      .workspace { display: flex; }
-      .chat { width: 100%; }
-      .nav-inner { height: 52px; }
-      .brand img { width: 34px; height: 34px; }
-      .dashboard { padding: 8px; }
-      .chat-header, .composer { padding-top: 8px; padding-bottom: 8px; }
-    }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; } }
-  </style>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/animations.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#chat-heading">Skip to consultation chat</a>
-  <header class="navbar">
-    <nav class="nav-inner" aria-label="Main navigation">
-      <div class="nav-brand">
-        <a class="brand" href="/" aria-label="Econite consultation home"><img src="/assests/econite-logo.png" alt="" width="46" height="46"><span>Econite</span></a>
-        <span class="nav-title">Consultation Chat</span>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+      <symbol id="arrow-diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+      <symbol id="spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z"/></symbol>
+      <symbol id="sprout" viewBox="0 0 24 24"><path d="M12 22v-9m0 5C5 18 3 14 3 8c6 0 9 4 9 10Zm0-5c0-6 3-9 9-9 0 6-3 9-9 9Z"/></symbol>
+      <symbol id="book" viewBox="0 0 24 24"><path d="M12 5v15M3 4c4-1 7 0 9 2 2-2 5-3 9-2v15c-4-1-7 0-9 2-2-2-5-3-9-2V4Z"/></symbol>
+      <symbol id="layers" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8l10-5Zm-9 9 9 5 9-5m-18 5 9 5 9-5"/></symbol>
+      <symbol id="brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 0 0-5-2 4 4 0 0 0-4 5 4 4 0 0 0-1 7 4 4 0 0 0 5 5 3 3 0 0 0 5-2V5Zm0 0a3 3 0 0 1 5-2 4 4 0 0 1 4 5 4 4 0 0 1 1 7 4 4 0 0 1-5 5 3 3 0 0 1-5-2M7 7l2 2m-4 4h3m9-6-2 2m4 4h-3"/></symbol>
+      <symbol id="chip" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 9h6v6H9V9Zm0-7v3m6-3v3M9 19v3m6-3v3M2 9h3m-3 6h3m14-6h3m-3 6h3"/></symbol>
+      <symbol id="message" viewBox="0 0 24 24"><path d="M21 11a8 8 0 0 1-8 8H6l-3 3V11a9 9 0 0 1 18 0Z"/><path d="M8 9h8m-8 4h5"/></symbol>
+      <symbol id="replay" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 1 7M3 4v6h6"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Main navigation">
+      <a class="brand" href="/" aria-label="Econite home"><img src="/assests/econite-logo.png" alt="" width="42" height="42"><span>Econite<span class="brand-period">.</span></span></a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks" hidden><span>Menu</span><span class="menu-lines" aria-hidden="true"></span></button>
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link" href="#home" aria-current="location">Home</a>
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="#mentorship">Explore Mentorship</a>
+        <a class="button button-small" href="/chat">Start Here <svg class="icon" aria-hidden="true"><use href="#arrow-diagonal"/></svg></a>
       </div>
-      <span class="lab-tag">ITE183 · Lab prototype</span>
     </nav>
   </header>
-  <main class="dashboard">
-    <div class="page-heading">
-      <p class="eyebrow">YOUR MENTORSHIP SPACE</p>
-      <h1>Good conversations. New possibilities.</h1>
-      <p class="heading-note">A little guidance can go a long way. Start a conversation.</p>
-    </div>
-    <div class="workspace">
-      <aside class="sidebar" aria-label="Conversation and demo settings">
-        <div class="sidebar-title"><h2>CONVERSATIONS</h2><span class="room-count" aria-label="One shared room">01</span></div>
-        <div class="room-card">
-          <div class="room-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l-3 3v-9.5A7.5 7.5 0 0 1 9.5 5H13m3-3v6m-3-3h6"/><path d="M7 11h7m-7 4h4"/></svg></div>
-          <div><strong>Shared consultation</strong><p>One room. Open perspectives.</p></div>
-        </div>
-        <p class="room-context">Everyone connected to this server shares this room. Messages stay in this page until you refresh.</p>
-        <div class="role-panel">
-          <div class="role-label"><label for="demoRole">Preview as</label><span class="demo-tag">Demo only</span></div>
-          <select id="demoRole" aria-describedby="roleHelp"><option value="Mentee">Mentee</option><option value="Mentor">Mentor</option></select>
-          <p class="role-help" id="roleHelp">Local preview only. This does not sign you in, identify your messages, or change who receives them.</p>
-        </div>
-        <div class="sidebar-footer">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9m0 5C5 17 3 13 3 7c6 0 9 4 9 10Zm0-5c0-6 3-9 9-9 0 6-3 9-9 9Z"/></svg>
-          <p>Small conversations.<br>Meaningful growth.</p>
-          <small>Listen with care. Share with purpose.</small>
-        </div>
-      </aside>
-      <section class="chat" aria-labelledby="chat-heading">
-        <header class="chat-header">
-          <div class="chat-title">
-            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11a8 8 0 0 1-8 8H6l-3 3V11a9 9 0 0 1 18 0Z"/><path d="M8 9h8m-8 4h5"/></svg>
-            <div><h2 id="chat-heading" tabindex="-1">Consultation room</h2><p>A space to ask, listen, and grow.</p></div>
+
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-grid shell">
+        <div class="hero-copy">
+          <p class="eyebrow hero-enter"><span class="tiny-spark">✳</span> A LITTLE CURIOSITY GOES A LONG WAY</p>
+          <h1 class="hero-enter" id="hero-title">Every great idea<br>starts with a<br><em>conversation.</em></h1>
+          <p class="hero-description hero-enter">Your research deserves more than a passing thought. Connect with people who can help you explore, develop, and bring your ideas to life.</p>
+          <div class="hero-actions hero-enter">
+            <a class="button" href="/chat">Start Here <svg class="icon" aria-hidden="true"><use href="#arrow-diagonal"/></svg></a>
+            <a class="text-link" href="#about">Explore How It Works <span aria-hidden="true">↓</span></a>
           </div>
-          <div class="connection">
-            <span class="status" id="status" data-state="connecting" role="status">Connecting</span>
-            <button class="reconnect" id="reconnectButton" type="button" hidden>Reconnect</button>
+          <p class="prototype-note hero-enter"><span class="outline-dot" aria-hidden="true"></span>An early prototype for a more connected research journey.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-orbit orbit-one" data-parallax="-0.05"></div>
+          <div class="art-orbit orbit-two" data-parallax="0.04"></div>
+          <div class="botanical-stage" data-parallax="-0.08">
+            <svg class="botanical" viewBox="0 0 440 520" fill="none">
+              <path d="M208 485C175 362 290 263 241 101" stroke="#547b53" stroke-width="3"/>
+              <path d="M218 399C130 404 76 346 70 279c90-1 150 44 148 120Z" fill="#a8c8a3"/>
+              <path d="M231 344c3-85 65-139 140-140-2 84-62 138-140 140Z" fill="#527958"/>
+              <path d="M246 265c-80 6-136-46-143-106 81-5 139 40 143 106Z" fill="#71976d"/>
+              <path d="M249 199c-2-70 42-117 102-127 9 66-34 117-102 127Z" fill="#bed1ab"/>
+              <path d="M244 136c-63-18-86-70-72-120 61 16 92 68 72 120Z" fill="#3c684b"/>
+              <path d="m82 290 130 101m27-59 120-117M115 169l126 86m14-68 85-104m-101 40-59-93" stroke="#f7f7f0" stroke-opacity=".45" stroke-width="1.5"/>
+              <ellipse cx="210" cy="491" rx="121" ry="11" fill="#123d32" opacity=".06"/>
+            </svg>
           </div>
-        </header>
-        <div class="room-notice">
-          <span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z"/></svg>Shared with every connected browser</span>
-          <details class="room-details">
-            <summary>About this room</summary>
-            <div class="details-content">
-              <p>This is a shared lab room, not a private consultation. There are no accounts or saved conversations.</p>
-              <p>The server includes a sender ID in each broadcast but does not tell this browser its own ID. Messages keep their original text and the same alignment; “sent by you” cannot be identified reliably.</p>
-              <p>Times show when this browser received a message, using your device clock. They are not server timestamps.</p>
-              <p>The Mentor/Mentee selector is a local demo only. It does not authenticate or identify anyone.</p>
+          <span class="floating-dot dot-one" data-parallax="0.1"></span>
+          <span class="floating-dot dot-two" data-parallax="-0.1"></span>
+          <span class="art-spark" data-parallax="0.08"><svg class="icon" aria-hidden="true"><use href="#spark"/></svg></span>
+          <span class="art-caption caption-top">A little “what if?”</span>
+          <div class="idea-track" data-parallax="0.14">
+            <div class="idea-card">
+              <span class="idea-pin"></span>
+              <div class="idea-card-heading"><svg class="icon"><use href="#spark"/></svg><span>THE FIRST SPARK</span></div>
+              <p>An idea worth<br><em>exploring…</em></p>
+              <div class="idea-rule"></div>
+              <small>What if technology could<br>help my community?</small>
+              <span class="idea-doodle">↗</span>
             </div>
-          </details>
+          </div>
+          <div class="conversation-tag" data-parallax="-0.04"><span class="tag-icon"><svg class="icon"><use href="#message"/></svg></span><span>Room for your next big idea.</span></div>
+          <span class="art-caption caption-bottom">From a thought, to something more.</span>
         </div>
-        <div class="message-area">
-          <div class="message-scroll" id="messageScroll" tabindex="0" role="region" aria-label="Message history">
-            <p class="session-marker">This browser session</p>
-            <div class="empty-state" id="emptyState">
-              <div class="empty-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11a8 8 0 0 1-8 8H6l-3 3V11a9 9 0 0 1 18 0Z"/><path d="M8 9h8m-8 4h5"/></svg></div>
-              <h3>A good place to begin.</h3>
-              <p>Bring a question, an idea, or a little curiosity.<br>Your next conversation starts here.</p>
+      </div>
+      <div class="hero-bottom shell"><a class="scroll-cue" href="#about"><span class="scroll-track" aria-hidden="true"><span></span></span>Keep a little curiosity. Scroll to explore.</a><span class="chapter">01 / A SPARK OF POSSIBILITY</span></div>
+    </section>
+
+    <section class="conversation-section section" id="about" aria-labelledby="about-title">
+      <div class="conversation-decoration decoration" data-parallax="0.04" aria-hidden="true"><svg class="icon"><use href="#message"/></svg></div>
+      <div class="shell">
+        <div class="section-top reveal"><p class="eyebrow"><span class="section-number">02</span> A CONVERSATION BEGINS</p><span class="section-aside">No perfect pitch required.</span></div>
+        <div class="conversation-grid">
+          <div class="conversation-copy reveal">
+            <h2 id="about-title">Big ideas grow<br>through simple<br><em>conversations.</em></h2>
+            <p class="section-description">You don't need to have everything figured out. Sometimes, all it takes is finding someone willing to listen, guide, and help you move forward.</p>
+            <div class="journey-steps" aria-label="A mentorship journey">
+              <p><span>01</span>Bring your curiosity.</p>
+              <p><span>02</span>Find a fresh perspective.</p>
+              <p><span>03</span>Take the next small step.</p>
             </div>
-            <ul class="messages" id="messages" role="log" aria-label="Shared room messages" aria-live="polite" aria-relevant="additions"></ul>
+            <p class="conversation-closing">“Sometimes, the right conversation<br>changes everything.”</p>
+            <a class="text-link" href="/chat">Start Your Own Conversation <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
           </div>
-          <button class="new-messages" id="newMessagesButton" type="button" hidden>New messages ↓</button>
+          <div class="demo-track" data-parallax="-0.025">
+            <div class="demo-window reveal" id="conversationDemo" aria-labelledby="demo-title">
+              <div class="demo-window-top"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>THE POWER OF A FIRST HELLO</span><svg class="icon" aria-hidden="true"><use href="#sprout"/></svg></div>
+              <div class="demo-header"><span class="demo-avatar"><svg class="icon" aria-hidden="true"><use href="#message"/></svg></span><div><h3 id="demo-title">An idea takes root.</h3><p>Student + mentor · Sample conversation</p></div><span class="simulation-tag">Demo</span></div>
+              <div class="demo-messages" id="demoMessages" tabindex="0" role="region" aria-label="Illustrative student and mentor conversation">
+                <p class="demo-start">Every beginning starts with hello.</p>
+                <ol class="demo-log" id="demoLog">
+                  <li class="demo-message student"><span class="demo-speaker">Student</span><p>Hi! I have a research idea, but I'm not sure where to start.</p></li>
+                  <li class="demo-message mentor"><span class="demo-speaker">Mentor</span><p>That's okay! Every great project starts somewhere. Tell me about your idea.</p></li>
+                  <li class="demo-message student"><span class="demo-speaker">Student</span><p>I want to create a flood-monitoring system that could help our community.</p></li>
+                  <li class="demo-message mentor"><span class="demo-speaker">Mentor</span><p>That's a meaningful idea! Let's explore what technology and research methods could make it possible.</p></li>
+                  <li class="demo-message student"><span class="demo-speaker">Student</span><p>Really? I thought it might be too difficult.</p></li>
+                  <li class="demo-message mentor"><span class="demo-speaker">Mentor</span><p>With the right guidance, we can break it down into achievable steps. 🌱</p></li>
+                </ol>
+                <div class="typing-indicator" id="typingIndicator" hidden aria-label="The sample mentor is typing"><span></span><span></span><span></span></div>
+              </div>
+              <div class="demo-controls">
+                <button class="demo-control" id="pauseDemo" type="button" hidden>Pause</button>
+                <button class="demo-control replay-control" id="replayDemo" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#replay"/></svg>Replay Conversation</button>
+                <span class="sr-only" id="demoStatus" role="status"></span>
+              </div>
+              <p class="demo-disclaimer">An illustrative conversation. No live chat or mentor connection.</p>
+            </div>
+            <div class="demo-bottom-note" aria-hidden="true"><span>Something meaningful starts small.</span><svg class="icon"><use href="#sprout"/></svg></div>
+          </div>
         </div>
-        <form class="composer" id="chatForm">
-          <div class="composer-top"><label for="message">Your message</label><span id="rolePreview">Mentee preview · demo only</span></div>
-          <div class="input-shell">
-            <input id="message" name="message" placeholder="Share a thought or ask a question…" autocomplete="off" maxlength="2000" aria-describedby="connectionHint" disabled>
-            <button class="send-button" id="sendButton" type="submit" aria-label="Send message" disabled><span>Send</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m21 3-6 18-4-8-8-4 18-6ZM11 13 21 3"/></svg></button>
-          </div>
-          <div class="composer-bottom"><p id="connectionHint" role="status">Connecting to the shared room…</p><span class="enter-hint"><kbd>Enter</kbd> to send</span></div>
-        </form>
-      </section>
-    </div>
-    <footer class="page-footer"><span>Local receipt times · History clears on refresh</span><span>Econite · Growing through connection</span></footer>
+      </div>
+    </section>
+
+    <section class="mentorship-section section" id="mentorship" aria-labelledby="mentorship-title">
+      <div class="mentorship-leaf decoration" data-parallax="-0.05" aria-hidden="true"><svg viewBox="0 0 300 400" fill="none"><path d="M100 400c0-150 170-180 140-360M143 272C51 294 17 214 23 157c80 2 126 48 120 115Zm61-111C125 164 92 97 107 43c68 16 104 65 97 118Z" fill="currentColor"/><path d="M154 267c94 1 140-70 137-127-81 9-126 54-137 127Z" fill="currentColor"/></svg></div>
+      <div class="shell">
+        <div class="section-top reveal"><p class="eyebrow"><span class="section-number">03</span> FIND YOUR DIRECTION</p><span class="section-aside">A little clarity for what comes next.</span></div>
+        <div class="mentorship-heading reveal"><h2 id="mentorship-title">Whatever you're building,<br>you don't have to figure<br>it out <em>alone.</em></h2><p class="section-description">From your first research proposal to your next innovative prototype, discover the kind of guidance that fits your journey.</p></div>
+        <div class="category-grid" role="group" aria-label="Choose a conversation topic" aria-describedby="categoryHelp">
+          <button class="category-card reveal" type="button" data-topic="research" aria-pressed="false" style="--reveal-delay:0ms"><span class="category-card-top"><span class="category-icon"><svg class="icon" aria-hidden="true"><use href="#book"/></svg></span><span class="category-number">01</span></span><span class="category-title">Research &<br>Academic Projects</span><span class="category-description">Explore research topics, strengthen your methodology, organize your findings, and gain clarity on your academic journey.</span><span class="category-action">Explore this direction <svg class="icon" aria-hidden="true"><use href="#arrow-diagonal"/></svg></span></button>
+          <button class="category-card reveal" type="button" data-topic="capstone" aria-pressed="false" style="--reveal-delay:80ms"><span class="category-card-top"><span class="category-icon"><svg class="icon" aria-hidden="true"><use href="#layers"/></svg></span><span class="category-number">02</span></span><span class="category-title">Capstone<br>Development</span><span class="category-description">Turn project concepts into structured plans, prototypes, and working solutions with guidance along the way.</span><span class="category-action">Explore this direction <svg class="icon" aria-hidden="true"><use href="#arrow-diagonal"/></svg></span></button>
+          <button class="category-card reveal" type="button" data-topic="ai" aria-pressed="false" style="--reveal-delay:160ms"><span class="category-card-top"><span class="category-icon"><svg class="icon" aria-hidden="true"><use href="#brain"/></svg></span><span class="category-number">03</span></span><span class="category-title">AI &<br>Machine Learning</span><span class="category-description">Explore intelligent systems, datasets, model development, and practical AI applications.</span><span class="category-action">Explore this direction <svg class="icon" aria-hidden="true"><use href="#arrow-diagonal"/></svg></span></button>
+          <button class="category-card reveal" type="button" data-topic="iot" aria-pressed="false" style="--reveal-delay:240ms"><span class="category-card-top"><span class="category-icon"><svg class="icon" aria-hidden="true"><use href="#chip"/></svg></span><span class="category-number">04</span></span><span class="category-title">IoT & Emerging<br>Technologies</span><span class="category-description">Discover sensors, hardware integration, connected devices, and innovative solutions to real-world problems.</span><span class="category-action">Explore this direction <svg class="icon" aria-hidden="true"><use href="#arrow-diagonal"/></svg></span></button>
+        </div>
+        <div class="category-selection reveal">
+          <div><p class="eyebrow" id="categoryLabel">YOUR NEXT STEP</p><p id="categoryHelp" role="status">Pick a direction that sparks your curiosity. It's just a conversation starter.</p><small>A topic choice opens the shared demo chat; it doesn't assign a mentor.</small></div>
+          <a class="button button-outline" id="continueChat" href="/chat">Continue to Chat <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing-section section" id="start" aria-labelledby="start-title">
+      <div class="closing-orbit decoration" data-parallax="0.04" aria-hidden="true"></div>
+      <span class="closing-spark decoration" aria-hidden="true"><svg class="icon"><use href="#spark"/></svg></span>
+      <div class="shell closing-content reveal">
+        <p class="eyebrow"><span class="section-number">04</span> YOUR IDEA STARTS HERE</p>
+        <h2 id="start-title">Your idea deserves<br>its <em>next step.</em></h2>
+        <p>Great ideas aren't meant to stay inside notebooks. Ask questions, exchange thoughts, and discover what your next step could be.</p>
+        <a class="button button-cream" href="/chat"><span>Start Here For Open Consultation Chat</span><svg class="icon" aria-hidden="true"><use href="#arrow-diagonal"/></svg></a>
+        <span class="closing-note">One conversation can be the beginning of something meaningful.</span>
+      </div>
+    </section>
   </main>
-  <noscript>This chat needs JavaScript to connect. Enable JavaScript and refresh this page.</noscript>
-  <script>
-    "use strict";
 
-    const statusText = document.getElementById("status");
-    const input = document.getElementById("message");
-    const button = document.getElementById("sendButton");
-    const messages = document.getElementById("messages");
-    const form = document.getElementById("chatForm");
-    const scroller = document.getElementById("messageScroll");
-    const emptyState = document.getElementById("emptyState");
-    const hint = document.getElementById("connectionHint");
-    const reconnectButton = document.getElementById("reconnectButton");
-    const newMessagesButton = document.getElementById("newMessagesButton");
-    const demoRole = document.getElementById("demoRole");
-    const rolePreview = document.getElementById("rolePreview");
-    const timeFormat = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
-    let socket = null;
-    let connectionState = "connecting";
-    let connectionFailed = false;
-    let composing = false;
-
-    function updateSendButton() {
-      button.disabled = connectionState !== "connected" || !socket || socket.readyState !== WebSocket.OPEN || !input.value.trim();
-    }
-
-    function setConnectionState(state, explanation) {
-      connectionState = state;
-      statusText.dataset.state = state;
-      statusText.textContent = { connecting: "Connecting", connected: "Connected", disconnected: "Disconnected", error: "Connection error" }[state];
-      hint.textContent = explanation;
-      input.disabled = state !== "connected";
-      reconnectButton.hidden = state === "connected" || state === "connecting";
-      updateSendButton();
-    }
-
-    function nearBottom() {
-      return scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop < 72;
-    }
-
-    function scrollToLatest() {
-      scroller.scrollTop = scroller.scrollHeight;
-      newMessagesButton.hidden = true;
-    }
-
-    function appendMessage(text) {
-      const followLatest = nearBottom();
-      const receivedAt = new Date();
-      const item = document.createElement("li");
-      const time = document.createElement("time");
-      time.dateTime = receivedAt.toISOString();
-      time.textContent = timeFormat.format(receivedAt);
-      time.title = "Received on this device: " + receivedAt.toLocaleString();
-      time.setAttribute("aria-label", "Received on this device at " + receivedAt.toLocaleString());
-
-      // app.bzg sends this exact greeting only to a newly connected client.
-      if (text === "Welcome to EcoNite!") {
-        item.className = "system-message";
-        const greeting = document.createElement("span");
-        greeting.textContent = text;
-        item.append(greeting, time);
-      } else {
-        emptyState.hidden = true;
-        item.className = "message";
-        const meta = document.createElement("div");
-        meta.className = "message-meta";
-        const label = document.createElement("span");
-        label.className = "message-label";
-        label.textContent = "Shared room";
-        meta.append(label, time);
-        const bubble = document.createElement("p");
-        bubble.className = "message-bubble";
-        // Preserve complete broadcasts: no identity guesses or HTML parsing.
-        bubble.textContent = text;
-        item.append(meta, bubble);
-      }
-
-      messages.appendChild(item);
-      if (followLatest) scrollToLatest();
-      else newMessagesButton.hidden = false;
-    }
-
-    function connect() {
-      if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) return;
-      connectionFailed = false;
-      setConnectionState("connecting", "Connecting to the shared room…");
-      const protocol = location.protocol === "https:" ? "wss:" : "ws:";
-      let currentSocket;
-      try {
-        currentSocket = new WebSocket(protocol + "//" + location.host);
-        socket = currentSocket;
-      } catch (error) {
-        setConnectionState("error", "Unable to connect. Check that the lab server is running, then reconnect.");
-        return;
-      }
-
-      currentSocket.onopen = function () {
-        if (socket !== currentSocket) return;
-        setConnectionState("connected", "Messages are shared with everyone in this room.");
-      };
-      currentSocket.onmessage = function (event) {
-        if (socket !== currentSocket) return;
-        appendMessage(event.data);
-      };
-      currentSocket.onclose = function () {
-        if (socket !== currentSocket) return;
-        setConnectionState("disconnected", connectionFailed
-          ? "Connection failed. Check the lab server, then reconnect."
-          : "Disconnected. Your draft is kept here; reconnect to send.");
-      };
-      currentSocket.onerror = function () {
-        if (socket !== currentSocket) return;
-        connectionFailed = true;
-        setConnectionState("error", "Connection error. Check the lab server, then reconnect.");
-      };
-    }
-
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      if (composing) return;
-      const text = input.value.trim();
-      if (!text || connectionState !== "connected" || !socket || socket.readyState !== WebSocket.OPEN) {
-        updateSendButton();
-        return;
-      }
-      try {
-        // Roles stay local; the original plain-text wire protocol is unchanged.
-        socket.send(text);
-        input.value = "";
-        updateSendButton();
-        input.focus();
-        scrollToLatest();
-      } catch (error) {
-        connectionFailed = true;
-        setConnectionState("error", "Your message could not be sent. Your draft is kept here; reconnect to try again.");
-        socket.close();
-      }
-    });
-
-    input.addEventListener("input", updateSendButton);
-    input.addEventListener("compositionstart", function () { composing = true; });
-    input.addEventListener("compositionend", function () { composing = false; });
-    input.addEventListener("keydown", function (event) {
-      if (event.key === "Enter" && (event.isComposing || composing || event.keyCode === 229)) event.preventDefault();
-    });
-    reconnectButton.addEventListener("click", connect);
-    newMessagesButton.addEventListener("click", scrollToLatest);
-    scroller.addEventListener("scroll", function () { if (nearBottom()) newMessagesButton.hidden = true; });
-    demoRole.addEventListener("change", function () {
-      rolePreview.textContent = demoRole.value + " preview · demo only";
-    });
-
-    connect();
-  </script>
+  <footer class="site-footer">
+    <div class="footer-main shell">
+      <div class="footer-about"><a class="brand" href="/" aria-label="Econite home"><img src="/assests/econite-logo.png" alt="" width="42" height="42" loading="lazy"><span>Econite<span class="brand-period">.</span></span></a><p>A space for curiosity, connection, and the next generation of research ideas.</p></div>
+      <nav class="footer-nav" aria-label="Footer navigation"><a href="#home">Home</a><a href="#mentorship">Explore Mentorship</a><a href="/chat">Consultation Chat <svg class="icon" aria-hidden="true"><use href="#arrow-diagonal"/></svg></a></nav>
+      <div class="footer-prototype"><span class="prototype-label">EARLY ACADEMIC PROTOTYPE</span><p>Built for ITE183 Laboratory 2.<br>The working chat is a shared demo room.</p></div>
+    </div>
+    <div class="footer-bottom shell"><span>© 2026 Econite project. Code licensed under MIT.</span><span> Developed by Hannah A. Hontiveros <svg class="icon" aria-hidden="true"><use href="#sprout"/></svg></span></div>
+  </footer>
 </body>
 </html>
