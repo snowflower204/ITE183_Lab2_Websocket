@@ -5,6 +5,16 @@ var server = http(8000);
 server.get = function (path, data) {
     if (path == "/") {
         server.sendFile("public/index.html");
+    } else if (path == "/chat") {
+        server.sendFile("public/chat.html");
+    } else if (path == "/css/style.css") {
+        server.sendFile("public/css/style.css");
+    } else if (path == "/css/chat.css") {
+        server.sendFile("public/css/chat.css");
+    } else if (path == "/js/animations.js") {
+        server.sendFile("public/js/animations.js");
+    } else if (path == "/js/chat.js") {
+        server.sendFile("public/js/chat.js");
     } else if (path == "/assests/econite-logo.png") {
         server.sendFile("public/assests/econite-logo.png");
     } else if (path == "/assests/favicon.ico") {

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#173d32">
+  <meta name="description" content="Econite's shared mentorship consultation chat. Ask, listen, and grow together.">
+  <title>Econite — Consultation Chat</title>
+  <link rel="icon" href="/assests/favicon.ico" type="image/png">
+  <link rel="stylesheet" href="/css/chat.css">
+  <script src="/js/chat.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#chat-heading">Skip to consultation chat</a>
+  <header class="navbar">
+    <nav class="nav-inner" aria-label="Main navigation">
+      <div class="nav-brand">
+        <a class="brand" href="/" aria-label="Econite home"><img src="/assests/econite-logo.png" alt="" width="46" height="46"><span>Econite</span></a>
+        <span class="nav-title">Consultation Chat</span>
+      </div>
+      <div class="nav-actions"><a class="home-link" href="/">← Home</a><span class="lab-tag">ITE183 · Lab prototype</span></div>
+    </nav>
+  </header>
+  <main class="dashboard">
+    <div class="page-heading">
+      <p class="eyebrow">YOUR MENTORSHIP SPACE</p>
+      <h1>Good conversations. New possibilities.</h1>
+      <p class="heading-note">A little guidance can go a long way. Start a conversation.</p>
+    </div>
+    <div class="workspace">
+      <aside class="sidebar" aria-label="Conversation and demo settings">
+        <div class="sidebar-title"><h2>CONVERSATIONS</h2><span class="room-count" aria-label="One shared room">01</span></div>
+        <div class="room-card">
+          <div class="room-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l-3 3v-9.5A7.5 7.5 0 0 1 9.5 5H13m3-3v6m-3-3h6"/><path d="M7 11h7m-7 4h4"/></svg></div>
+          <div><strong>Shared consultation</strong><p>One room. Open perspectives.</p></div>
+        </div>
+        <p class="room-context">Everyone connected to this server shares this room. Messages stay in this page until you refresh.</p>
+        <div class="role-panel">
+          <div class="role-label"><label for="demoRole">Preview as</label><span class="demo-tag">Demo only</span></div>
+          <select id="demoRole" aria-describedby="roleHelp"><option value="Mentee">Mentee</option><option value="Mentor">Mentor</option></select>
+          <p class="role-help" id="roleHelp">Local preview only. This does not sign you in, identify your messages, or change who receives them.</p>
+        </div>
+        <div class="sidebar-footer">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21v-9m0 5C5 17 3 13 3 7c6 0 9 4 9 10Zm0-5c0-6 3-9 9-9 0 6-3 9-9 9Z"/></svg>
+          <p>Small conversations.<br>Meaningful growth.</p>
+          <small>Listen with care. Share with purpose.</small>
+        </div>
+      </aside>
+      <section class="chat" aria-labelledby="chat-heading">
+        <header class="chat-header">
+          <div class="chat-title">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11a8 8 0 0 1-8 8H6l-3 3V11a9 9 0 0 1 18 0Z"/><path d="M8 9h8m-8 4h5"/></svg>
+            <div><h2 id="chat-heading" tabindex="-1">Consultation room</h2><p>A space to ask, listen, and grow.</p></div>
+          </div>
+          <div class="connection">
+            <span class="status" id="status" data-state="connecting" role="status">Connecting</span>
+            <button class="reconnect" id="reconnectButton" type="button" hidden>Reconnect</button>
+          </div>
+        </header>
+        <div class="room-notice">
+          <span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a18 18 0 0 1 0 18 18 18 0 0 1 0-18Z"/></svg>Shared with every connected browser</span>
+          <details class="room-details">
+            <summary>About this room</summary>
+            <div class="details-content">
+              <p>This is a shared lab room, not a private consultation. There are no accounts or saved conversations.</p>
+              <p>The server includes a sender ID in each broadcast but does not tell this browser its own ID. Messages keep their original text and the same alignment; “sent by you” cannot be identified reliably.</p>
+              <p>Times show when this browser received a message, using your device clock. They are not server timestamps.</p>
+              <p>The Mentor/Mentee selector is a local demo only. It does not authenticate or identify anyone.</p>
+            </div>
+          </details>
+        </div>
+        <p class="topic-context" id="topicContext" hidden></p>
+        <div class="message-area">
+          <div class="message-scroll" id="messageScroll" tabindex="0" role="region" aria-label="Message history">
+            <p class="session-marker">This browser session</p>
+            <div class="empty-state" id="emptyState">
+              <div class="empty-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11a8 8 0 0 1-8 8H6l-3 3V11a9 9 0 0 1 18 0Z"/><path d="M8 9h8m-8 4h5"/></svg></div>
+              <h3>A good place to begin.</h3>
+              <p>Bring a question, an idea, or a little curiosity.<br>Your next conversation starts here.</p>
+            </div>
+            <ul class="messages" id="messages" role="log" aria-label="Shared room messages" aria-live="polite" aria-relevant="additions"></ul>
+          </div>
+          <button class="new-messages" id="newMessagesButton" type="button" hidden>New messages ↓</button>
+        </div>
+        <form class="composer" id="chatForm">
+          <div class="composer-top"><label for="message">Your message</label><span id="rolePreview">Mentee preview · demo only</span></div>
+          <div class="input-shell">
+            <input id="message" name="message" placeholder="Share a thought or ask a question…" autocomplete="off" maxlength="2000" aria-describedby="connectionHint" disabled>
+            <button class="send-button" id="sendButton" type="submit" aria-label="Send message" disabled><span>Send</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m21 3-6 18-4-8-8-4 18-6ZM11 13 21 3"/></svg></button>
+          </div>
+          <div class="composer-bottom"><p id="connectionHint" role="status">Connecting to the shared room…</p><span class="enter-hint"><kbd>Enter</kbd> to send</span></div>
+        </form>
+      </section>
+    </div>
+    <footer class="page-footer"><span>Local receipt times · History clears on refresh</span><span>Econite · Growing through connection</span></footer>
+  </main>
+  <noscript>This chat needs JavaScript to connect. Enable JavaScript and refresh this page.</noscript>
+</body>
+</html>
