@@ -1,0 +1,27 @@
+include("lib/http.bzg");
+
+var server = http(8000);
+
+server.get = function (path, data) {
+    if (path == "/") {
+        server.sendFile("public/index.html");
+    } else {
+        server.sendFile("public/404.html");
+    }
+};
+
+server.onConnect = function (clientId) {
+    print("Connected: " + clientId);
+    server.send(clientId, "Welcome to EcoNite!");
+};
+
+server.onData = function (message, clientId) {
+    print("Client " + clientId + ": " + message);
+    server.sendAll("User " + clientId + " says: " + message);
+};
+
+server.onDisconnect = function (clientId) {
+    print("Disconnected: " + clientId);
+};
+
+server.run();
