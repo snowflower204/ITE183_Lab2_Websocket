@@ -67,4 +67,27 @@ Previously all non-root requests reached the empty fallback, preventing those as
 
 During this UI update, `bzg install` was executed but reported `Failed to install 'http' (code=1)`. The manager returned exit code 0 despite that failure. The existing local HTTP library remained unchanged, and `bzg run` successfully served the project on port 8000. A clean dependency download is not verified in this environment.
 
-Browser acceptance results and remaining manual checks are recorded below after live testing.
+Executed on October 15, 2026, against the real Bonezegei server using headless Chrome 155 and two independent browser contexts/windows controlled through Chrome DevTools Protocol:
+
+- Both windows connected, received the welcome, and received each other's broadcasts exactly once.
+- Real keyboard Enter sent trimmed plain text; whitespace-only Enter and form submission sent nothing.
+- HTML/script-like messages appeared literally, without injected elements or execution.
+- The demo role changed only the local preview label; captured outgoing WebSocket frames stayed plain text.
+- Identical messages from distinct client IDs remained separate broadcasts with no guessed own-sender alignment.
+- Local timestamp labels and machine-readable dates appeared on received messages.
+- Reading older messages preserved scroll position; the new-message button and automatic following near the bottom worked.
+- Actual socket closure disabled sending and preserved the draft. Reconnect transitioned through Connecting to Connected. An actual offline handshake produced Error then Disconnected.
+- Stopping the real server disconnected both windows, disabled input/Send, exposed Reconnect, and retained the draft.
+- After restarting through `bzg run`, both windows reconnected; the retained draft sent through Enter and was broadcast exactly once to each window.
+- Final layouts passed at 1440×1000, 390×844, 320×568, and 844×390, with the composer inside the viewport and no horizontal overflow. Long unbroken text wrapped; the About panel fit each size.
+- The existing logo and favicon both decoded in the browser. HTTP responses matched the original local asset bytes. Visible browser-tab favicon display was not inspected in headless mode.
+- The custom fallback rendered at an unknown path, fit a narrow viewport, and its return link opened the connected chat. Its HTTP status remains 200, as noted above.
+- No uncaught JavaScript exceptions were observed. Inline JavaScript syntax and `git diff --check` passed.
+
+Browser automation and screenshots were kept in a temporary QA directory, without adding project dependencies or changing the backend. These were real browser tests, not a physical-device or assistive-technology audit.
+
+### Manual checks still needed
+
+1. Retry `bzg install` in the normal development environment and confirm a successful dependency download; the failed installation here is not a pass.
+2. Check a physical phone with its on-screen keyboard open, orientation changes, and touch scrolling. Responsive viewport emulation cannot verify those device behaviors.
+3. Check Firefox/Safari, screen-reader announcements, keyboard-only navigation, and real IME composition. Those browser/device/accessibility checks were not executed.
